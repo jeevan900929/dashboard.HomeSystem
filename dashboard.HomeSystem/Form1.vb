@@ -4,13 +4,19 @@ Imports System.Net
 Public Class Form1
     Dim count = 0
     Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
+        Const OFF_STATUS = "<!DOCTYPE HTML>" & vbCrLf & "<html>" & vbCrLf & "0</html>" & vbLf
         Const ON_STATUS = "<!DOCTYPE HTML>" & vbCrLf & "<html>" & vbCrLf & "1</html>" & vbLf
-        If WRequest("http://192.168.1.16/RearRoomsHeater/Status", "GET", "") = ON_STATUS Then
+        Dim request = WRequest("http://192.168.1.16/RearRoomsHeater/Status", "GET", "")
+        If request = ON_STATUS Then
             Label1.Text = "Heater On"
-        Else
+            Label1.Text = "Online"
+        ElseIf request = OFF_STATUS Then
             Label1.Text = "Heater Off"
+            Label1.Text = "Online"
+        Else
+            Label1.Text = ""
+            Label1.Text = "Offline"
         End If
-
     End Sub
 
     Function WRequest(URL As String, method As String, POSTdata As String) As String
