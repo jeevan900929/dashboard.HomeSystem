@@ -2,18 +2,36 @@
 Imports System.Net
 
 Public Class Form1
-    Dim count = 0
+    Dim device0State = -1
     Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
         Const OFF_STATUS = "<!DOCTYPE HTML>" & vbCrLf & "<html>" & vbCrLf & "0</html>" & vbLf
         Const ON_STATUS = "<!DOCTYPE HTML>" & vbCrLf & "<html>" & vbCrLf & "1</html>" & vbLf
         Dim request = WRequest("http://192.168.1.16/RearRoomsHeater/Status", "GET", "")
         If request = ON_STATUS Then
+            If device0State <> 1 Then
+                If device0State = -1 Then
+                    AppendToLogFile(1)
+                End If
+                AppendToLogFile(3)
+            End If
+            device0State = 1
             Label1.Text = "Heater On"
             Label2.Text = "Online"
         ElseIf request = OFF_STATUS Then
+            If device0State <> 0 Then
+                If device0State = -1 Then
+                    AppendToLogFile(1)
+                End If
+                AppendToLogFile(2)
+            End If
+            device0State = 0
             Label1.Text = "Heater Off"
             Label2.Text = "Online"
         Else
+            If device0State <> -1 Then
+                AppendToLogFile(0)
+            End If
+            device0State = -1
             Label1.Text = ""
             Label2.Text = "Offline"
         End If
@@ -55,4 +73,20 @@ Public Class Form1
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         Label1_Click(sender, e)
     End Sub
+
+    Function AppendToLogFile(logEvent As Integer) As Boolean
+        Dim logString As String = Now.ToString("s")
+        If logEvent = 0 Then
+            logString = logString & vbTab & "Device went offline" & vbNewLine
+        ElseIf logEvent = 1 Then
+            logString = logString & vbTab & "Device came online" & vbNewLine
+        ElseIf logEvent = 2 Then
+            logString = logString & vbTab & "Device turned off" & vbNewLine
+        ElseIf logEvent = 3 Then
+            logString = logString & vbTab & "Device turned on" & vbNewLine
+        End If
+        My.Computer.FileSystem.WriteAllText("C:\Users\jeeva\OneDrive\Desktop\homeHeater.log", logString, True)
+        Return True
+    End Function
+
 End Class
