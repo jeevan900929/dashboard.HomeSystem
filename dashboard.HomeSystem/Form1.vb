@@ -9,13 +9,13 @@ Public Class Form1
         Dim request = WRequest("http://192.168.1.16/RearRoomsHeater/Status", "GET", "")
         If request = ON_STATUS Then
             Label1.Text = "Heater On"
-            Label1.Text = "Online"
+            Label2.Text = "Online"
         ElseIf request = OFF_STATUS Then
             Label1.Text = "Heater Off"
-            Label1.Text = "Online"
+            Label2.Text = "Online"
         Else
             Label1.Text = ""
-            Label1.Text = "Offline"
+            Label2.Text = "Offline"
         End If
     End Sub
 
