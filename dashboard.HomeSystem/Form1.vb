@@ -4,8 +4,8 @@ Imports System.Net
 Public Class Form1
     Dim count = 0
     Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
-        Dim onStatus = "<!DOCTYPE HTML>" & vbCrLf & "<html>" & vbCrLf & "1</html>" & vbLf
-        If WRequest("http://192.168.1.16/RearRoomsHeater/Status", "GET", "") = onStatus Then
+        Const ON_STATUS = "<!DOCTYPE HTML>" & vbCrLf & "<html>" & vbCrLf & "1</html>" & vbLf
+        If WRequest("http://192.168.1.16/RearRoomsHeater/Status", "GET", "") = ON_STATUS Then
             Label1.Text = "Heater On"
         Else
             Label1.Text = "Heater Off"
@@ -46,4 +46,7 @@ Public Class Form1
         Return responseData
     End Function
 
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        Label1_Click(sender, e)
+    End Sub
 End Class
