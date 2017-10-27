@@ -11,8 +11,9 @@ Public Class Form1
             If device0State <> 1 Then
                 If device0State = -1 Then
                     AppendToLogFile(1)
+                Else
+                    AppendToLogFile(3)
                 End If
-                AppendToLogFile(3)
             End If
             device0State = 1
             Label1.Text = "Heater On"
@@ -21,8 +22,9 @@ Public Class Form1
             If device0State <> 0 Then
                 If device0State = -1 Then
                     AppendToLogFile(1)
+                Else
+                    AppendToLogFile(2)
                 End If
-                AppendToLogFile(2)
             End If
             device0State = 0
             Label1.Text = "Heater Off"
