@@ -2,7 +2,13 @@
 Imports System.Net
 
 Public Class Form1
-    Dim device0State = -1
+    Private device0State = -1
+    Const sec = 1000
+    Const min = 60 * sec
+    Const hour = 60 * min
+    Const heatTime = 15 * sec
+    Private heaterTimer As Integer = heatTime
+
     Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
         Const OFF_STATUS = "<!DOCTYPE HTML>" & vbCrLf & "<html>" & vbCrLf & "0</html>" & vbLf
         Const ON_STATUS = "<!DOCTYPE HTML>" & vbCrLf & "<html>" & vbCrLf & "1</html>" & vbLf
@@ -86,9 +92,47 @@ Public Class Form1
             logString = logString & vbTab & "Device turned off" & vbNewLine
         ElseIf logEvent = 3 Then
             logString = logString & vbTab & "Device turned on" & vbNewLine
+        ElseIf logEvent = 4 Then
+            logString = logString & vbTab & "Device timer started" & vbNewLine
+        ElseIf logEvent = 5 Then
+            logString = logString & vbTab & "Device timer stopped" & vbNewLine
         End If
         My.Computer.FileSystem.WriteAllText("C:\Users\jeeva\OneDrive\Desktop\homeHeater.log", logString, True)
         Return True
     End Function
 
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        WRequest("http://192.168.1.16/RearRoomsHeater/On", "GET", "")
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        WRequest("http://192.168.1.16/RearRoomsHeater/Off", "GET", "")
+    End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Timer2.Interval = 100
+        Timer2.Enabled = True
+        AppendToLogFile(4)
+        Button1_Click(sender, e)
+    End Sub
+
+    Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
+
+        If heaterTimer > 0 Then
+            heaterTimer -= 100
+            Label3.Text = Format(heaterTimer / (60 * 1000), "###.000") & "min"
+        Else
+            AppendToLogFile(5)
+            Button2_Click(sender, e)
+            Timer2.Enabled = False
+            heaterTimer = heatTime
+            Label3.Text = ""
+        End If
+
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        heaterTimer = 0
+        Label3.Text = ""
+    End Sub
 End Class
