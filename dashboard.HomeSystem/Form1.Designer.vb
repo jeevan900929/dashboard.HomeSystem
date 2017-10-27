@@ -79,7 +79,7 @@ Partial Class Form1
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(75, 42)
         Me.Button3.TabIndex = 4
-        Me.Button3.Text = "Turn on for 1 hour"
+        Me.Button3.Text = "Turn on for 45 minutes"
         Me.Button3.UseVisualStyleBackColor = True
         '
         'Timer2
@@ -106,7 +106,7 @@ Partial Class Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(120, 163)
+        Me.ClientSize = New System.Drawing.Size(109, 163)
         Me.ControlBox = False
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Button4)
@@ -116,7 +116,7 @@ Partial Class Form1
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Location = New System.Drawing.Point(1500, 0)
+        Me.Location = New System.Drawing.Point(100, 0)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "Form1"

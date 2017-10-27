@@ -2,11 +2,16 @@
 Imports System.Net
 
 Public Class Form1
+
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Left = Screen.AllScreens(0).Bounds.Right - Width
+    End Sub
+
     Private device0State = -1
     Const sec = 1000
     Const min = 60 * sec
     Const hour = 60 * min
-    Const heatTime = 15 * sec
+    Const heatTime = 45 * min
     Private heaterTimer As Integer = heatTime
 
     Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
@@ -116,23 +121,32 @@ Public Class Form1
         Button1_Click(sender, e)
     End Sub
 
+    Private timerAborted As Boolean = False
+
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
 
         If heaterTimer > 0 Then
             heaterTimer -= 100
-            Label3.Text = Format(heaterTimer / (60 * 1000), "###.000") & "min"
+            Label3.Text = Format(heaterTimer / (60 * 1000), "###.00") & "min"
         Else
             AppendToLogFile(5)
             Button2_Click(sender, e)
             Timer2.Enabled = False
             heaterTimer = heatTime
             Label3.Text = ""
+            If Not timerAborted Then
+                Beep()
+                MsgBox("Hot water is ready")
+            Else
+                timerAborted = False
+            End If
         End If
 
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        timerAborted = True
         heaterTimer = 0
-        Label3.Text = ""
     End Sub
+
 End Class
